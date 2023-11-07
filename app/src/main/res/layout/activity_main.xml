@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:orientation="vertical"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Math "
+        android:textSize="40sp"
+        android:textColor="@color/black"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/until20"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="33"
+            android:text="Multipiy until 20"
+             />
+
+        <Button
+            android:id="@+id/challenge"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="33"
+            android:text="challenge" />
+
+        <Button
+            android:id="@+id/multyTable"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="33"
+            android:text="multuplaction table" />
+
+
+
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+         <Button
+             android:id="@+id/clear"
+             android:layout_width="130dp"
+             android:layout_height="73dp"
+             android:text="clear"
+             android:textSize="20sp"
+             android:backgroundTint="@color/orange"/>
+
+         <TextView
+             android:id="@+id/Xtable1"
+            android:layout_width="130dp"
+            android:layout_height="73dp"
+             android:gravity="center"
+             android:textSize="40sp"
+            android:background="@color/orange"
+             android:layout_marginBottom="10dp"
+             />
+
+        <TextView
+            android:id="@+id/multiply"
+            android:layout_width="130dp"
+            android:layout_height="73dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/orange"
+            android:text="x"
+            android:gravity="center"
+            android:textSize="50dp" />
+
+        <TextView
+            android:id="@+id/Xtable2"
+            android:layout_width="130dp"
+            android:layout_height="73dp"
+            android:gravity="center"
+            android:textSize="40sp"
+            android:background="@color/orange"
+            android:layout_marginBottom="10dp"/>
+
+        <EditText
+            android:id="@+id/answer"
+            android:layout_width="130dp"
+            android:layout_height="73dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/orange"
+            android:gravity="center"
+            android:hint="answer"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/check"
+            android:layout_width="match_parent"
+            android:layout_height="73dp"
+            android:text="check"
+            android:textSize="30sp"
+            android:backgroundTint="@color/green"
+            />
+        <Button
+            android:id="@+id/showUsers"
+            android:layout_width="match_parent"
+            android:layout_height="73dp"
+            android:text="show alll users"
+            android:textSize="30sp"
+            android:backgroundTint="@color/blue"
+            />
+    </LinearLayout>
+
+
+
+</LinearLayout>
