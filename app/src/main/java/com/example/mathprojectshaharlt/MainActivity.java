@@ -72,15 +72,21 @@ public class MainActivity extends AppCompatActivity {
         check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int num = Integer.parseInt(Xtable1.getText().toString());
-                int num1 = Integer.parseInt(Xtable2.getText().toString());
                 int ans = Integer.parseInt(answer.getText().toString());
-                if(E.check(num,num1,ans))
+                if (E.check(ans))
                     showToast("good job");
                 else
                     showToast("you fail - try again later");
                 answer.setText("");
 
+            }
+        });
+        clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Xtable1.setText("");
+                Xtable2.setText("");
+                answer.setText("");
             }
         });
     }

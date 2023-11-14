@@ -5,26 +5,25 @@ import java.util.Random;
 public class Exercise {
     private int num;
     private int num1;
-    private int result;
     public Exercise(){
 
     }
     public void challenge(){
         Random r = new Random();
-        int num = r.nextInt(9)+1;
-        int num1 = r.nextInt(90)+10;
+        num = r.nextInt(9)+1;
+        num1 = r.nextInt(90)+10;
     }
     public void until20(){
         Random r = new Random();
-        int num = r.nextInt(9)+1;
-        int num1 = r.nextInt(10)+10;
+        num = r.nextInt(9)+1;
+        num1 = r.nextInt(10)+10;
     }
     public void multyTable(){
         Random r = new Random();
-        int num = r.nextInt(9)+1;
-        int num1 = r.nextInt(9)+1;
+        num = r.nextInt(9)+1;
+        num1 = r.nextInt(9)+1;
     }
-    public boolean check(int num, int num1, int ans){
+    public boolean check(int ans){
         if(num*num1 == ans)
             return true;
         else
@@ -47,4 +46,5 @@ public class Exercise {
     public void setNum1(int num1) {
         this.num1 = num1;
     }
+
 }
