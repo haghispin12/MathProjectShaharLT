@@ -1,7 +1,10 @@
 package com.example.mathprojectshaharlt;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private void showToast (String s){
     Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
     }
-
+    private User user;
     private Button challenge;
     private Button until20;
     private Button multyTable;
@@ -24,12 +27,17 @@ public class MainActivity extends AppCompatActivity {
     private TextView Xtable1;
     private TextView Xtable2;
     private EditText answer;
+    private MainViewMoudle mainViewMoudle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = getIntent();
+        String userName = intent.getStringExtra("userName");
+        showToast("hello"+" "+ userName);
         initView();
+
 
     }
     private void initView(){
@@ -42,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
         Xtable2 = findViewById(R.id.Xtable2);
         answer = findViewById(R.id.answer);
         Exercise E = new Exercise();
-
+        mainViewMoudle = new ViewModelProvider(this).get(MainViewMoudle.class);
+        user = new User(user.getUsarName());
 
 
         challenge.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +98,19 @@ public class MainActivity extends AppCompatActivity {
                 answer.setText("");
             }
         });
-    }
+        mainViewMoudle.LDnum1.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                Xtable1.setText(integer+"");
+            }
+        });
+        mainViewMoudle.LDnum2.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+              Xtable2.setText(integer+"");
+            }
+        });
 
+    }
 
 }
