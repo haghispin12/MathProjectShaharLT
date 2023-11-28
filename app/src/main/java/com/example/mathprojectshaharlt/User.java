@@ -4,8 +4,7 @@ public class User {
     private String UsarName;
     private int score;
 
-    public User(String Username){
-    this.UsarName = Username;
+    public User(){
     }
 
     public String getUsarName() {
@@ -21,6 +20,6 @@ public class User {
     }
 
     public void setScore(int score) {
-        this.score = score;
+        this.score += score;
     }
 }

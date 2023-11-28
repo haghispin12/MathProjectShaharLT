@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView Xtable2;
     private EditText answer;
     private MainViewMoudle mainViewMoudle;
+    private Button Rate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +50,12 @@ public class MainActivity extends AppCompatActivity {
         Xtable1 = findViewById(R.id.Xtable1);
         Xtable2 = findViewById(R.id.Xtable2);
         answer = findViewById(R.id.answer);
+        Rate = findViewById(R.id.Rate);
         Exercise E = new Exercise();
         mainViewMoudle = new ViewModelProvider(this).get(MainViewMoudle.class);
-        user = new User(user.getUsarName());
+        user = new User();
+
+
 
 
         challenge.setOnClickListener(new View.OnClickListener() {
@@ -82,8 +86,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int ans = Integer.parseInt(answer.getText().toString());
-                if (E.check(ans))
+                if (E.check(ans)) {
                     showToast("good job");
+                    user.setScore(mainViewMoudle.getLastScore());
+                }
                 else
                     showToast("you fail - try again later");
                 answer.setText("");
@@ -96,6 +102,12 @@ public class MainActivity extends AppCompatActivity {
                 Xtable1.setText("");
                 Xtable2.setText("");
                 answer.setText("");
+            }
+        });
+        Rate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
         mainViewMoudle.LDnum1.observe(this, new Observer<Integer>() {
