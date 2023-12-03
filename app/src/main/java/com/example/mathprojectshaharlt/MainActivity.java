@@ -1,5 +1,9 @@
 package com.example.mathprojectshaharlt;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -55,8 +59,27 @@ public class MainActivity extends AppCompatActivity {
         mainViewMoudle = new ViewModelProvider(this).get(MainViewMoudle.class);
         user = new User();
 
+        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>(){
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        int myRate = result.getData().getIntExtra("rate",-1);
+                        showToast(myRate+"");
+                    }
+                });
 
 
+
+
+
+
+        Rate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, Rate.class);
+                activityResultLauncher.launch(intent);
+            }
+        });
 
         challenge.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,12 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 answer.setText("");
             }
         });
-        Rate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
         mainViewMoudle.LDnum1.observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
