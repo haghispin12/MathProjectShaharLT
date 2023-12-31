@@ -5,6 +5,8 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
     }
     private User user;
+    private Button ShowUsers;
     private Button challenge;
     private Button until20;
     private Button multyTable;
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         Xtable2 = findViewById(R.id.Xtable2);
         answer = findViewById(R.id.answer);
         Rate = findViewById(R.id.Rate);
+        ShowUsers = findViewById(R.id.showUsers);
         Exercise E = new Exercise();
         mainViewMoudle = new ViewModelProvider(this).get(MainViewMoudle.class);
         user = new User();
@@ -125,6 +129,14 @@ public class MainActivity extends AppCompatActivity {
                 Xtable1.setText("");
                 Xtable2.setText("");
                 answer.setText("");
+            }
+        });
+        ShowUsers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
+                trans.add(R.id.frameLayout, new ShowUsers());
+                trans.commit();
             }
         });
 

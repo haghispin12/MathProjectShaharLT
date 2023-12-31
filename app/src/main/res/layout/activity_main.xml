@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/frameLayout"
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    >
+<LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -129,7 +136,7 @@
             android:id="@+id/showUsers"
             android:layout_width="match_parent"
             android:layout_height="73dp"
-            android:text="show alll users"
+            android:text="show all users"
             android:textSize="30sp"
             android:backgroundTint="@color/blue"
             />
@@ -138,3 +145,4 @@
 
 
 </LinearLayout>
+</FrameLayout>
