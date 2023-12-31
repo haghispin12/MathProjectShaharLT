@@ -3,6 +3,7 @@ package com.example.mathprojectshaharlt;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,7 @@ public class ShowUsers extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        MainViewMoudle = new ViewModelProvider(this).get(mainViewMoudle.class));
         }
 
 
