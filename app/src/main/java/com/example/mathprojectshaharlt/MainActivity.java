@@ -5,7 +5,6 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -18,13 +17,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Random;
-
 public class MainActivity extends AppCompatActivity {
     private void showToast (String s){
     Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
     }
-    private User user;
+   // private User user;
     private Button ShowUsers;
     private Button challenge;
     private Button until20;
@@ -44,11 +41,15 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String userName = intent.getStringExtra("userName");
         showToast("hello"+" "+ userName);
+        mainViewMoudle = new ViewModelProvider(this).get(MainViewMoudle.class);
+        mainViewMoudle.setName(userName);
         initView();
 
 
     }
-    private void initView(){
+    private void initView() {
+       // User user = mainViewMoudle.getUser();
+       // Exercise E = mainViewMoudle.getExercise();
         challenge = findViewById(R.id.challenge);
         until20 = findViewById(R.id.until20);
         multyTable = findViewById(R.id.multyTable);
@@ -59,22 +60,17 @@ public class MainActivity extends AppCompatActivity {
         answer = findViewById(R.id.answer);
         Rate = findViewById(R.id.Rate);
         ShowUsers = findViewById(R.id.showUsers);
-        Exercise E = new Exercise();
-        mainViewMoudle = new ViewModelProvider(this).get(MainViewMoudle.class);
-        user = new User();
+
 
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>(){
+                new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
-                        int myRate = result.getData().getIntExtra("rate",-1);
-                        showToast(myRate+"");
+                        int myRate = result.getData().getIntExtra("rate", -1);
+                        showToast(myRate + "");
+                        mainViewMoudle.setRating(myRate);
                     }
                 });
-
-
-
-
 
 
         Rate.setOnClickListener(new View.OnClickListener() {
@@ -88,36 +84,32 @@ public class MainActivity extends AppCompatActivity {
         challenge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                E.challenge();
-                Xtable1.setText(E.getNum()+"");
-                Xtable2.setText(E.getNum1()+"");
+                mainViewMoudle.challenge();
+
             }
         });
         until20.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                E.until20();
-                Xtable1.setText(E.getNum()+"");
-                Xtable2.setText(E.getNum1()+"");
+                mainViewMoudle.until20();
+
             }
         });
         multyTable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                E.multyTable();
-                Xtable1.setText(E.getNum()+"");
-                Xtable2.setText(E.getNum1()+"");
+                mainViewMoudle.multyTable();
+
             }
         });
         check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int ans = Integer.parseInt(answer.getText().toString());
-                if (E.check(ans)) {
+                if (mainViewMoudle.check(ans)) {
                     showToast("good job");
-                    user.setScore(mainViewMoudle.getLastScore());
-                }
-                else
+                    mainViewMoudle.setScore(mainViewMoudle.getLastScore());
+                } else
                     showToast("you fail - try again later");
                 answer.setText("");
 
@@ -134,15 +126,11 @@ public class MainActivity extends AppCompatActivity {
         ShowUsers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //   FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
-                //  trans.add(R.id.frameLayout, new ShowUsers());
-                //  trans.commit();
-                Intent intent = new Intent(MainActivity.this,UserFruit.class);
-                startActivity(intent);
-
-
-
-
+                FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
+                trans.add(R.id.frameLayout, new ShowUsersFragment());
+                trans.commit();
+                //Intent intent = new Intent(MainActivity.this, ShowUsers.class);
+                //startActivity(intent);
 
 
             }
@@ -152,15 +140,20 @@ public class MainActivity extends AppCompatActivity {
         mainViewMoudle.LDnum1.observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
-                Xtable1.setText(integer+"");
+                Xtable1.setText(integer + "");
             }
         });
         mainViewMoudle.LDnum2.observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
-              Xtable2.setText(integer+"");
+                Xtable2.setText(integer + "");
             }
         });
+
+
+
+
+
 
     }
 

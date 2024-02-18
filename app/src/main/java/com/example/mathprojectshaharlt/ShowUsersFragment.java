@@ -2,7 +2,6 @@ package com.example.mathprojectshaharlt;
 
 import static android.app.Activity.RESULT_OK;
 
-import android.app.Instrumentation;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
@@ -10,9 +9,7 @@ import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultCaller;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -24,10 +21,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
-public class ShowUsers extends Fragment {
+public class ShowUsersFragment extends Fragment {
     private MainViewMoudle mainViewMoudle;
     private Button picture;
     private ImageView image;
+    private Button addUser;
     Uri uri;
     Intent intent = new Intent(Intent.ACTION_SEND);
 
@@ -38,6 +36,7 @@ public class ShowUsers extends Fragment {
         public void onActivityResult(ActivityResult result) {
             if(result.getResultCode() ==  RESULT_OK){
                 image.setImageURI(uri);
+
                 //showPic.setImageURI(uri);
             }
         }
@@ -65,6 +64,7 @@ public class ShowUsers extends Fragment {
     private void initView(View view) {
         picture=view.findViewById(R.id.picture);
         image = view.findViewById(R.id.image);
+        addUser = view.findViewById(R.id.addUser);
         picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,6 +76,13 @@ public class ShowUsers extends Fragment {
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                 startCamera.launch(cameraIntent);
 
+            }
+        });
+        addUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainViewMoudle.setUserImg(uri);
+                mainViewMoudle.addUserDatabase(requireActivity());
             }
         });
 
