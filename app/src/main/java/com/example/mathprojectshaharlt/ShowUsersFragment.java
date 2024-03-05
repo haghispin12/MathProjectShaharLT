@@ -12,6 +12,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.provider.MediaStore;
@@ -20,6 +21,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import java.util.ArrayList;
 
 public class ShowUsersFragment extends Fragment {
     private MainViewMoudle mainViewMoudle;
@@ -86,8 +89,22 @@ public class ShowUsersFragment extends Fragment {
             }
         });
 
+        mainViewMoudle.users.observe(requireActivity(), new Observer<ArrayList<User>>() {
+            @Override
+            public void onChanged(ArrayList<User> users1) {
+                ArrayList<User>users=users1;
+
+
+            }
+        });
+
+
 
     }
+
+
+
+
 
 }
 

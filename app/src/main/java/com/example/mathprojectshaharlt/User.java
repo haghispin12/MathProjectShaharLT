@@ -1,11 +1,13 @@
 package com.example.mathprojectshaharlt;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 
 public class User {
     private String UserName;
     private int score;
     long Id;
+    private Bitmap bitmap;
     private int rating;
     private Uri uri;
 
@@ -14,6 +16,23 @@ public class User {
         score = this.score;
         id = this.Id;
     }
+    public User(long id,String userName, int rating, Bitmap bitmap,int score){
+        id = this.Id;
+        userName = this.UserName;
+        rating = this.rating;
+        bitmap = this.bitmap;
+        score = this.score;
+
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
+
     public User(String UserName){
         this.UserName=UserName;
     }

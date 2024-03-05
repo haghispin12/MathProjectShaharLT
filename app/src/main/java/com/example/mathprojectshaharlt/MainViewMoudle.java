@@ -6,9 +6,12 @@ import android.net.Uri;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.ArrayList;
+
 public class MainViewMoudle extends ViewModel {
     MutableLiveData<Integer> LDnum1;
     MutableLiveData<Integer> LDnum2;
+    MutableLiveData<ArrayList<User>> users;
     Exercise exercise;
     User user;
     String name;
@@ -17,6 +20,7 @@ public class MainViewMoudle extends ViewModel {
     public MainViewMoudle(){
     LDnum1 = new MutableLiveData<>();
     LDnum2 = new MutableLiveData<>();
+    users = new MutableLiveData<>();
     exercise = new Exercise();
 
     }
@@ -73,6 +77,7 @@ public class MainViewMoudle extends ViewModel {
         return LDnum2;
     }
 
+
     public void setUser(User user) {
         this.user = user;
     }
@@ -83,7 +88,8 @@ public class MainViewMoudle extends ViewModel {
     public void addUserDatabase(Context context){
         DBHelper dbHelper = new DBHelper(context);
         dbHelper.insert(user,context);
-
+        ArrayList<User> users = dbHelper.selectAll();
+        int n =0;
     }
     public void setUserImg(Uri uri){
         user.setUri(uri);
