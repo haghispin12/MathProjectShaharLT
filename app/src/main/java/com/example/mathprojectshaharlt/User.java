@@ -17,11 +17,11 @@ public class User {
         id = this.Id;
     }
     public User(long id,String userName, int rating, Bitmap bitmap,int score){
-        id = this.Id;
-        userName = this.UserName;
-        rating = this.rating;
-        bitmap = this.bitmap;
-        score = this.score;
+        this.Id = id;
+        this.UserName=userName;
+        this.rating = rating;
+        this.bitmap = bitmap;
+        this.score= score;
 
     }
 

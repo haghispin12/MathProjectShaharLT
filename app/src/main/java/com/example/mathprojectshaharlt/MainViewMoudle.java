@@ -87,9 +87,14 @@ public class MainViewMoudle extends ViewModel {
 
     public void addUserDatabase(Context context){
         DBHelper dbHelper = new DBHelper(context);
-        dbHelper.insert(user,context);
-        ArrayList<User> users = dbHelper.selectAll();
+        long id = dbHelper.insert(user,context);
+        ArrayList<User> users1 = dbHelper.selectAll();
+        users.postValue(users1);
         int n =0;
+    }
+    public ArrayList<User> aelectAllUser (Context context){
+        DBHelper dbHelper = new DBHelper(context);
+        return dbHelper.selectAll();
     }
     public void setUserImg(Uri uri){
         user.setUri(uri);
@@ -98,4 +103,5 @@ public class MainViewMoudle extends ViewModel {
         DBHelper dbHelper = new DBHelper(context);
         dbHelper.selectAll();
     }
+
 }

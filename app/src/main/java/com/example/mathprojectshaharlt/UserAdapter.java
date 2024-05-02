@@ -19,10 +19,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder> 
     private OnItemClickListener listener;
 
     public UserAdapter(ArrayList<User>users, OnItemClickListener listener){
-        users = this.users;
+        this.users = users;
     }
     public UserAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,int viewType){
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemlist,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.userview,parent,false);
         return new MyViewHolder(view);
     }
 
@@ -46,8 +46,8 @@ ImageView UserImg;
         UserImg = ItemView.findViewById(R.id.UserImg);
     }
     public void bind(final User item, final OnItemClickListener listener){
-        UserName.setText(item.getName());
-        UserImg.setImageResource(item.setBitmap(item.getBitmap()););
+        UserName.setText(item.getUserName());
+        UserImg.setImageBitmap(item.getBitmap());
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

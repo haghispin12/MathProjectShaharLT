@@ -25,15 +25,15 @@ public class UserFruit extends AppCompatActivity {
         fruits.add(new Fruits("lemon",R.drawable.lemon));
         fruits.add(new Fruits("orange",R.drawable.orange));
 
-        MyFruirtsAdapter myFruirtsAdapter = new MyFruirtsAdapter(fruits,new MyFruirtsAdapter.OnItemClickListerner(){
-            @Override
-            public void onItemClick(Fruits item){
-                Toast.makeText(UserFruit.this, item.getName(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        rcShowUsers.setLayoutManager(new LinearLayoutManager(this));
-        rcShowUsers.setAdapter(myFruirtsAdapter);
-        rcShowUsers.setHasFixedSize(true);
+//        MyFruirtsAdapter myFruirtsAdapter = new MyFruirtsAdapter(fruits,new MyFruirtsAdapter.OnItemClickListerner(){
+//            @Override
+//            public void onItemClick(Fruits item){
+//                Toast.makeText(UserFruit.this, item.getName(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        rcShowUsers.setLayoutManager(new LinearLayoutManager(this));
+//        rcShowUsers.setAdapter(myFruirtsAdapter);
+//        rcShowUsers.setHasFixedSize(true);
 
 
 
