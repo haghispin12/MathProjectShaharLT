@@ -1,4 +1,4 @@
-package com.example.mathprojectshaharlt;
+package com.example.mathprojectshaharlt.mathproject;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -14,9 +14,7 @@ import androidx.annotation.Nullable;
 
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 public class DBHelper extends SQLiteOpenHelper {

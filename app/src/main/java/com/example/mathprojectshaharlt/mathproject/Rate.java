@@ -1,4 +1,4 @@
-package com.example.mathprojectshaharlt;
+package com.example.mathprojectshaharlt.mathproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
+
+import com.example.mathprojectshaharlt.R;
 
 public class Rate extends AppCompatActivity {
 private SeekBar sb;

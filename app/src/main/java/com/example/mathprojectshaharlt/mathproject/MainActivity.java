@@ -1,4 +1,4 @@
-package com.example.mathprojectshaharlt;
+package com.example.mathprojectshaharlt.mathproject;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.mathprojectshaharlt.R;
 
 public class MainActivity extends AppCompatActivity {
     private void showToast (String s){

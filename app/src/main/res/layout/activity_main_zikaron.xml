@@ -4,13 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".mathproject.UserFruit">
+    tools:context=".MainZikaron">
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/rcShowUsers"
-        tools:listitem="@layout/activity_user_fruit"
-
-    />
-
+        android:id="@+id/rcShowCards"
+        />
 </LinearLayout>

@@ -1,11 +1,11 @@
-package com.example.mathprojectshaharlt;
+package com.example.mathprojectshaharlt.mathproject;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.widget.Toast;
+
+import com.example.mathprojectshaharlt.R;
 
 import java.util.ArrayList;
 

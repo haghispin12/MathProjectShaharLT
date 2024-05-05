@@ -1,4 +1,4 @@
-package com.example.mathprojectshaharlt;
+package com.example.mathprojectshaharlt.mathproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.example.mathprojectshaharlt.R;
 
 public class loginActivity extends AppCompatActivity {
     private Button submit;

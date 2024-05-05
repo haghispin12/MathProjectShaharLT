@@ -1,8 +1,7 @@
-package com.example.mathprojectshaharlt;
+package com.example.mathprojectshaharlt.mathproject;
 
 import static android.app.Activity.RESULT_OK;
 
-import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
@@ -29,7 +28,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.example.mathprojectshaharlt.UserAdapter.OnItemClickListener;
+import com.example.mathprojectshaharlt.R;
 
 import java.util.ArrayList;
 
