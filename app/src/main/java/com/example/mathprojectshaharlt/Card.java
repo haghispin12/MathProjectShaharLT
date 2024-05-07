@@ -6,12 +6,16 @@ import android.widget.ImageView;
 
 public class Card {
     private int id;
+    private int idcontent;
     private int imagecard;
+    boolean isHide;
 
 
-    public Card(int id, int imagecard){
+    public Card(int id, int idcontent, int imagecard, boolean isHide){
         this.id = id;
+        this.idcontent =  idcontent;
         this.imagecard = imagecard;
+        this.isHide = isHide;
     }
     public int getId() {
         return id;
