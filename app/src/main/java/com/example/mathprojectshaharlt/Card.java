@@ -6,12 +6,12 @@ import android.widget.ImageView;
 
 public class Card {
     private int id;
-    private Bitmap cardbitmap;
+    private int imagecard;
 
 
-    public Card(int id,Bitmap cardbitmap){
+    public Card(int id, int imagecard){
         this.id = id;
-        this.cardbitmap = cardbitmap;
+        this.imagecard = imagecard;
     }
     public int getId() {
         return id;
@@ -21,11 +21,11 @@ public class Card {
         this.id = id;
     }
 
-    public Bitmap getCardbitmap() {
-        return cardbitmap;
+    public int getImagecard() {
+        return imagecard;
     }
 
-    public void setCardbitmap(Bitmap cardbitmap) {
-        this.cardbitmap = cardbitmap;
+    public void setImagecard(int imagecard) {
+        this.imagecard = imagecard;
     }
 }

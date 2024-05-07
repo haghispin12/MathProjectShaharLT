@@ -53,7 +53,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.MyviewHolder
         }
 
         public void bind(final Card item, final OnitemClickListener listener) {
-            Cardimg.setImageBitmap(item.getCardbitmap());
+            Cardimg.setImageResource(item.getImagecard());
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
