@@ -32,10 +32,11 @@ public class MainZikaron extends AppCompatActivity {
 
                     }
                 });
+                rcShowCards.setLayoutManager(new LinearLayoutManager(MainZikaron.this));
+                rcShowCards.setAdapter(cardsAdapter);
+                rcShowCards.setHasFixedSize(true);
+
             }
         });
-     rcShowCards.setLayoutManager(new LinearLayoutManager(this));
-     rcShowCards.setAdapter(rcShowCards.getAdapter());
-     rcShowCards.hasFixedSize(true);
     }
 }
