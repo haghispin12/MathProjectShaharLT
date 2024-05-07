@@ -18,12 +18,12 @@ public class MainVM extends ViewModel{
         ECards.add(new Card(3,R.drawable.mazdalogo));
         ECards.add(new Card(3,R.drawable.mzadacar));
         ECards.add(new Card(4,R.drawable.bmwcar));
-        ECards.add(new Card(4,R.drawable.bmwLogo));
+        ECards.add(new Card(4,R.drawable.bmw));
         ECards.add(new Card(5,R.drawable.toyotacar));
         ECards.add(new Card(5,R.drawable.toyotalogo));
+        ECards.add(new Card(6,R.drawable.bydlogo));
+        ECards.add(new Card(6,R.drawable.bydcar));
         Cards.setValue(ECards);
     }
-
-
 }
 

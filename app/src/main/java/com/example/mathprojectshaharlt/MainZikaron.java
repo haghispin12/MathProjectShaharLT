@@ -32,7 +32,7 @@ public class MainZikaron extends AppCompatActivity {
 
                     }
                 });
-                rcShowCards.setLayoutManager(new LinearLayoutManager(MainZikaron.this));
+                rcShowCards.setLayoutManager(new GridLayoutManager(MainZikaron.this,3));
                 rcShowCards.setAdapter(cardsAdapter);
                 rcShowCards.setHasFixedSize(true);
 
