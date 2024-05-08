@@ -17,6 +17,15 @@ public class Card {
         this.imagecard = imagecard;
         this.isHide = isHide;
     }
+
+    public Card(int id, int idcontent, int imagecard){
+        this.id = id;
+        this.idcontent =  idcontent;
+        this.imagecard = imagecard;
+        this.isHide = true;
+    }
+
+
     public int getId() {
         return id;
     }
@@ -31,5 +40,13 @@ public class Card {
 
     public void setImagecard(int imagecard) {
         this.imagecard = imagecard;
+    }
+
+    public int getIdcontent() {
+        return idcontent;
+    }
+
+    public void setIdcontent(int idcontent) {
+        this.idcontent = idcontent;
     }
 }

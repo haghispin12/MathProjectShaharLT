@@ -25,6 +25,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.MyviewHolder
 
     public CardsAdapter(ArrayList<Card> cards, OnitemClickListener listener) {
         this.Cards = cards;
+        this.listener = listener;
     }
 
     @NonNull
@@ -44,6 +45,10 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.MyviewHolder
         return Cards.size();
     }
 
+    public void setCards(ArrayList<Card>cards){
+        this.Cards = cards;
+    }
+
     public static class MyviewHolder extends RecyclerView.ViewHolder {
         ImageView Cardimg;
 
@@ -53,7 +58,11 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.MyviewHolder
         }
 
         public void bind(final Card item, final OnitemClickListener listener) {
-            Cardimg.setImageResource(item.getImagecard());
+            if(item.isHide == true) {
+                Cardimg.setImageResource(R.drawable.backcard);
+            }else{
+                Cardimg.setImageResource(item.getImagecard());
+            }
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -62,7 +71,6 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.MyviewHolder
             });
 
         }
-
 
     }
 }

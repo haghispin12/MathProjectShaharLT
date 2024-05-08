@@ -8,8 +8,10 @@ import java.util.ArrayList;
 
 public class MainVM extends ViewModel{
     MutableLiveData<ArrayList<Card>> Cards;
+    MutableLiveData<Integer>exposed;
     public MainVM(){
         Cards = new MutableLiveData<>();
+        exposed = new MutableLiveData<>(0);
         ArrayList<Card> ECards = new ArrayList<Card>();
         ECards.add(new Card(1, 1, R.drawable.hyunday,true));
         ECards.add(new Card(2, 1,R.drawable.hyundaaycar,true));
@@ -24,6 +26,14 @@ public class MainVM extends ViewModel{
         ECards.add(new Card(11,6,R.drawable.bydlogo,true));
         ECards.add(new Card(12,6,R.drawable.bydcar,true));
         Cards.setValue(ECards);
+    }
+
+    public MutableLiveData<Integer> getExposed() {
+        return exposed;
+    }
+
+    public void setExposed(MutableLiveData<Integer> exposed) {
+        this.exposed = exposed;
     }
 }
 
