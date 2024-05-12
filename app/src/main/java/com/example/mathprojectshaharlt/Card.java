@@ -9,13 +9,15 @@ public class Card {
     private int idcontent;
     private int imagecard;
     boolean isHide;
+    boolean findZoog;
 
 
-    public Card(int id, int idcontent, int imagecard, boolean isHide){
+    public Card(int id, int idcontent, int imagecard, boolean isHide, boolean findZoog){
         this.id = id;
         this.idcontent =  idcontent;
         this.imagecard = imagecard;
         this.isHide = isHide;
+        this.findZoog = findZoog;
     }
 
     public Card(int id, int idcontent, int imagecard){
@@ -23,6 +25,7 @@ public class Card {
         this.idcontent =  idcontent;
         this.imagecard = imagecard;
         this.isHide = true;
+
     }
 
 

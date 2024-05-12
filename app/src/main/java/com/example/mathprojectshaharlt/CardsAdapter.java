@@ -58,6 +58,9 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.MyviewHolder
         }
 
         public void bind(final Card item, final OnitemClickListener listener) {
+//            if (item.findZoog == true){
+//                Cardimg.setImageResource(R.drawable.white);
+//            }
             if(item.isHide == true) {
                 Cardimg.setImageResource(R.drawable.backcard);
             }else{
@@ -69,6 +72,7 @@ public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.MyviewHolder
                     listener.OnItemClick(item);
                 }
             });
+
 
         }
 

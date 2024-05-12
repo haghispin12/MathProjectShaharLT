@@ -4,11 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.widget.ImageView;
+import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -24,19 +24,36 @@ public class MainZikaron extends AppCompatActivity {
         setContentView(R.layout.activity_main_zikaron);
         rcShowCards = findViewById(R.id.rcShowCards);
         mainVM = new ViewModelProvider(this).get(MainVM.class);
-        mainVM.exposed.observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                if (integer == 2) {
-                    if(isSame(mainVM.Cards.getValue())) {
-                        mainVM.exposed.setValue(0);
-                        Toast.makeText(MainZikaron.this, "great", Toast.LENGTH_LONG).show();
-                    }
-                    mainVM.exposed.setValue(0);
-                    Toast.makeText(MainZikaron.this, "not great", Toast.LENGTH_LONG).show();
-                    }
-            }
-        });
+ //       mainVM.exposed.observe(this, new Observer<Integer>() {
+//            @Override
+//            public void onChanged(Integer integer) {
+//                if (integer == 2) {
+//                    if (isSame(mainVM.Cards.getValue())) {
+//                        mainVM.exposed.setValue(0);
+//                        Toast.makeText(MainZikaron.this, "great", Toast.LENGTH_LONG).show();
+//                        final Handler handler = new Handler();
+//                        handler.postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                delteCards(mainVM.Cards.getValue());
+//                            }
+//                        },1000);
+//
+//                    } else {
+//                        mainVM.exposed.setValue(0);
+//                        Toast.makeText(MainZikaron.this, "not great", Toast.LENGTH_LONG).show();
+//                        final Handler handler = new Handler();
+//                        handler.postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                hideCards(mainVM.Cards.getValue());
+//                            }
+//                        },1000);
+//
+//                    }
+//                }
+//            }
+ //       });
 
 
         mainVM.Cards.observe(this, new Observer<ArrayList<Card>>() {
@@ -45,9 +62,26 @@ public class MainZikaron extends AppCompatActivity {
                 cardsAdapter = new CardsAdapter(cards, new CardsAdapter.OnitemClickListener() {
                     @Override
                     public void OnItemClick(Card item) {
-                        ExposeCard(cards, item);
-                        mainVM.exposed.setValue(mainVM.getExposed().getValue() + 1);
-                        cardsAdapter.setCards(cards);
+                    if (opossiteCards(mainVM.Cards.getValue())==1||opossiteCards(mainVM.Cards.getValue())==0){
+                            ExposeCard(mainVM.Cards.getValue(), item);
+                            //mainVM.exposed.setValue(mainVM.getExposed().getValue() + 1);
+
+                            if (isSeconed(mainVM.Cards.getValue())) {
+                                Log.d("testg", "Second");
+
+                                if (isSame(mainVM.Cards.getValue())) {
+                                    Log.d("testg", "same");
+//                                  markZoog(mainVM.Cards.getValue());
+////                                delteCards(mainVM.Cards.getValue());
+                                } else {
+                                    Log.d("testg", "not same");
+                                    //hideCards(mainVM.Cards.getValue());
+                                }
+                            } else {
+                                Log.d("testg", "first");
+                            }
+                        }
+                        cardsAdapter.setCards(mainVM.Cards.getValue());
                         cardsAdapter.notifyDataSetChanged();
                     }
                 });
@@ -58,6 +92,32 @@ public class MainZikaron extends AppCompatActivity {
             }
         });
     }
+    public void markZoog(ArrayList<Card>cards){
+        for (int i =0;i<cards.size();i++){
+            if(cards.get(i).isHide == false){
+                cards.get(i).findZoog = true;
+            }
+        }
+    }
+    public int opossiteCards(ArrayList<Card>cards){
+        int counter = 0;
+        for (int i = 0; i < cards.size(); i++) {
+            if (cards.get(i).isHide == false)
+                counter++;
+        }
+    return counter;
+    }
+
+    public boolean isSeconed(ArrayList<Card>cards){
+        int counter = 0;
+        for (int i =0 ; i< cards.size();i++){
+            if (cards.get(i).isHide == false)
+                counter++;
+        }
+        if(counter == 2)
+            return true;
+        return false;
+    }
 
     public void ExposeCard(ArrayList<Card> cards, Card card) {
         for (int i = 0; i < cards.size(); i++) {
@@ -67,13 +127,29 @@ public class MainZikaron extends AppCompatActivity {
             }
         }
     }
+    public void delteCards(ArrayList<Card> cards){
+        int i =0;
+        for (i =0;i<cards.size();i++){
+            if (cards.get(i).findZoog == true){
+                cards.get(i).setImagecard(R.drawable.white);
+            }
+        }
+    }
+    public void hideCards(ArrayList<Card> cards){
+        for (int i = 0;i<cards.size();i++){
+            if (cards.get(i).isHide == false){
+                cards.get(i).isHide = true;
+            }
+        }
+    }
 
     public boolean isSame(ArrayList<Card> cards) {
         int tmp = -1;
         int count = 0;
         for (int i = 0; i < cards.size(); i++) {
-            if (cards.get(i).isHide == false) {
+            if (cards.get(i).isHide == false&& cards.get(i).findZoog == false) {
                 count++;
+                cards.get(i).findZoog = true;
                 if (count == 2) {
                     if (cards.get(i).getIdcontent() == tmp) {
                         return true;
