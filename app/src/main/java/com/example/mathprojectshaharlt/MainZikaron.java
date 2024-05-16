@@ -24,36 +24,7 @@ public class MainZikaron extends AppCompatActivity {
         setContentView(R.layout.activity_main_zikaron);
         rcShowCards = findViewById(R.id.rcShowCards);
         mainVM = new ViewModelProvider(this).get(MainVM.class);
- //       mainVM.exposed.observe(this, new Observer<Integer>() {
-//            @Override
-//            public void onChanged(Integer integer) {
-//                if (integer == 2) {
-//                    if (isSame(mainVM.Cards.getValue())) {
-//                        mainVM.exposed.setValue(0);
-//                        Toast.makeText(MainZikaron.this, "great", Toast.LENGTH_LONG).show();
-//                        final Handler handler = new Handler();
-//                        handler.postDelayed(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                delteCards(mainVM.Cards.getValue());
-//                            }
-//                        },1000);
-//
-//                    } else {
-//                        mainVM.exposed.setValue(0);
-//                        Toast.makeText(MainZikaron.this, "not great", Toast.LENGTH_LONG).show();
-//                        final Handler handler = new Handler();
-//                        handler.postDelayed(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                hideCards(mainVM.Cards.getValue());
-//                            }
-//                        },1000);
-//
-//                    }
-//                }
-//            }
- //       });
+
 
 
         mainVM.Cards.observe(this, new Observer<ArrayList<Card>>() {
@@ -62,23 +33,33 @@ public class MainZikaron extends AppCompatActivity {
                 cardsAdapter = new CardsAdapter(cards, new CardsAdapter.OnitemClickListener() {
                     @Override
                     public void OnItemClick(Card item) {
-                    if (opossiteCards(mainVM.Cards.getValue())==1||opossiteCards(mainVM.Cards.getValue())==0){
+                    if (opossiteCards(mainVM.Cards.getValue())==1||opossiteCards(mainVM.Cards.getValue())==0){//בודק כמה קלפים הפוכים - נכנס במקרה של 1 או 0
                             ExposeCard(mainVM.Cards.getValue(), item);
-                            //mainVM.exposed.setValue(mainVM.getExposed().getValue() + 1);
+                            if (isSeconed(mainVM.Cards.getValue())) {// האם זה הקלף השני שהפוך?
+                                if (isSame(mainVM.Cards.getValue())) {//האם 2 הקלפים ההפוכים דומים?
+                                    final Handler handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            markZoog(mainVM.Cards.getValue());
+                                            delteCards(mainVM.Cards.getValue());
+                                            cardsAdapter.setCards(mainVM.Cards.getValue());
+                                            cardsAdapter.notifyDataSetChanged();
+                                        }
+                                    },750);
 
-                            if (isSeconed(mainVM.Cards.getValue())) {
-                                Log.d("testg", "Second");
-
-                                if (isSame(mainVM.Cards.getValue())) {
-                                    Log.d("testg", "same");
-//                                  markZoog(mainVM.Cards.getValue());
-////                                delteCards(mainVM.Cards.getValue());
+////
                                 } else {
-                                    Log.d("testg", "not same");
-                                    //hideCards(mainVM.Cards.getValue());
+                                    final Handler handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            hideCards(mainVM.Cards.getValue());
+                                            cardsAdapter.setCards(mainVM.Cards.getValue());
+                                            cardsAdapter.notifyDataSetChanged();
+                                        }
+                                    },750);
                                 }
-                            } else {
-                                Log.d("testg", "first");
                             }
                         }
                         cardsAdapter.setCards(mainVM.Cards.getValue());
@@ -93,6 +74,7 @@ public class MainZikaron extends AppCompatActivity {
         });
     }
     public void markZoog(ArrayList<Card>cards){
+        int counter = 0;
         for (int i =0;i<cards.size();i++){
             if(cards.get(i).isHide == false){
                 cards.get(i).findZoog = true;
@@ -121,7 +103,7 @@ public class MainZikaron extends AppCompatActivity {
 
     public void ExposeCard(ArrayList<Card> cards, Card card) {
         for (int i = 0; i < cards.size(); i++) {
-            if (card.getId() == cards.get(i).getId()) {
+            if (card.getId() == cards.get(i).getId()&& cards.get(i).findZoog == false) {
                 cards.get(i).isHide = false;
 
             }
@@ -131,6 +113,7 @@ public class MainZikaron extends AppCompatActivity {
         int i =0;
         for (i =0;i<cards.size();i++){
             if (cards.get(i).findZoog == true){
+                cards.get(i).isHide = true;
                 cards.get(i).setImagecard(R.drawable.white);
             }
         }
