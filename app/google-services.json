@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "292459809534",
+    "project_id": "zikaron-3df97",
+    "storage_bucket": "zikaron-3df97.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:292459809534:android:d3ae065d6301ddf317b3af",
+        "android_client_info": {
+          "package_name": "com.example.mathprojectshaharlt"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWUbYOlUI_2U4oNwVq9G8ZNWHPFGPGdlQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

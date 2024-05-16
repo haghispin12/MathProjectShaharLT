@@ -34,15 +34,14 @@ public class MainZikaron extends AppCompatActivity {
                     @Override
                     public void OnItemClick(Card item) {
                     if (opossiteCards(mainVM.Cards.getValue())==1||opossiteCards(mainVM.Cards.getValue())==0){//בודק כמה קלפים הפוכים - נכנס במקרה של 1 או 0
-                            ExposeCard(mainVM.Cards.getValue(), item);
+                            ExposeCard(mainVM.Cards.getValue(), item);//מוצא את הקלף שנלחץ במערך והופך אותו
                             if (isSeconed(mainVM.Cards.getValue())) {// האם זה הקלף השני שהפוך?
-                                if (isSame(mainVM.Cards.getValue())) {//האם 2 הקלפים ההפוכים דומים?
+                                if (isSame2(mainVM.Cards.getValue())) {//האם 2 הקלפים ההפוכים דומים?
                                     final Handler handler = new Handler();
                                     handler.postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
                                             markZoog(mainVM.Cards.getValue());
-                                            delteCards(mainVM.Cards.getValue());
                                             cardsAdapter.setCards(mainVM.Cards.getValue());
                                             cardsAdapter.notifyDataSetChanged();
                                         }
@@ -78,6 +77,7 @@ public class MainZikaron extends AppCompatActivity {
         for (int i =0;i<cards.size();i++){
             if(cards.get(i).isHide == false){
                 cards.get(i).findZoog = true;
+                cards.get(i).isHide=false;
             }
         }
     }
@@ -103,18 +103,9 @@ public class MainZikaron extends AppCompatActivity {
 
     public void ExposeCard(ArrayList<Card> cards, Card card) {
         for (int i = 0; i < cards.size(); i++) {
-            if (card.getId() == cards.get(i).getId()&& cards.get(i).findZoog == false) {
+            if (card.getId() == cards.get(i).getId()) {
                 cards.get(i).isHide = false;
 
-            }
-        }
-    }
-    public void delteCards(ArrayList<Card> cards){
-        int i =0;
-        for (i =0;i<cards.size();i++){
-            if (cards.get(i).findZoog == true){
-                cards.get(i).isHide = true;
-                cards.get(i).setImagecard(R.drawable.white);
             }
         }
     }
@@ -130,9 +121,8 @@ public class MainZikaron extends AppCompatActivity {
         int tmp = -1;
         int count = 0;
         for (int i = 0; i < cards.size(); i++) {
-            if (cards.get(i).isHide == false&& cards.get(i).findZoog == false) {
+            if (cards.get(i).isHide == false) {
                 count++;
-                cards.get(i).findZoog = true;
                 if (count == 2) {
                     if (cards.get(i).getIdcontent() == tmp) {
                         return true;
@@ -144,6 +134,22 @@ public class MainZikaron extends AppCompatActivity {
 
             }
 
+        }
+        return false;
+    }
+    public boolean isSame2(ArrayList<Card> cards){
+        int tmp =0;
+        int counter=0;
+        for (int i=0;i<cards.size();i++){
+            if (cards.get(i).isHide == false){
+                counter++;
+                if (counter==1)
+                tmp = cards.get(i).getIdcontent();
+                if(counter == 2)
+                    if(cards.get(i).getIdcontent()==tmp){
+                        return true;
+                    }
+            }
         }
         return false;
     }
