@@ -24,6 +24,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:hint="user name"
+        android:id="@+id/userNameLabel"
         />
     <EditText
         android:layout_width="match_parent"
@@ -31,6 +32,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:hint="password"
+        android:id="@+id/passwordLabel"
         />
     <EditText
         android:layout_width="match_parent"
@@ -38,12 +40,14 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:hint="confirm password"
+        android:id="@+id/confirmLabel"
         />
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="submit"
+        android:id="@+id/submitUser"
         />
 
 

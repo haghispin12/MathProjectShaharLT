@@ -33,36 +33,38 @@ public class MainZikaron extends AppCompatActivity {
                 cardsAdapter = new CardsAdapter(cards, new CardsAdapter.OnitemClickListener() {
                     @Override
                     public void OnItemClick(Card item) {
-                    if (opossiteCards(mainVM.Cards.getValue())==1||opossiteCards(mainVM.Cards.getValue())==0){//בודק כמה קלפים הפוכים - נכנס במקרה של 1 או 0
-                            ExposeCard(mainVM.Cards.getValue(), item);//מוצא את הקלף שנלחץ במערך והופך אותו
-                            if (isSeconed(mainVM.Cards.getValue())) {// האם זה הקלף השני שהפוך?
-                                if (isSame2(mainVM.Cards.getValue())) {//האם 2 הקלפים ההפוכים דומים?
-                                    final Handler handler = new Handler();
-                                    handler.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            markZoog(mainVM.Cards.getValue());
-                                            cardsAdapter.setCards(mainVM.Cards.getValue());
-                                            cardsAdapter.notifyDataSetChanged();
-                                        }
-                                    },750);
+                        if (item.findZoog != true) {
+                            if (opossiteCards(mainVM.Cards.getValue()) == 1 || opossiteCards(mainVM.Cards.getValue()) == 0) {//בודק כמה קלפים הפוכים - נכנס במקרה של 1 או 0
+                                ExposeCard(mainVM.Cards.getValue(), item);//מוצא את הקלף שנלחץ במערך והופך אותו
+                                if (isSeconed(mainVM.Cards.getValue())) {// האם זה הקלף השני שהפוך?
+                                    if (isSame(mainVM.Cards.getValue())) {//האם 2 הקלפים ההפוכים דומים?
+                                        final Handler handler = new Handler();
+                                        handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                markZoog(mainVM.Cards.getValue());
+                                                cardsAdapter.setCards(mainVM.Cards.getValue());
+                                                cardsAdapter.notifyDataSetChanged();
+                                            }
+                                        }, 750);
 
 ////
-                                } else {
-                                    final Handler handler = new Handler();
-                                    handler.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            hideCards(mainVM.Cards.getValue());
-                                            cardsAdapter.setCards(mainVM.Cards.getValue());
-                                            cardsAdapter.notifyDataSetChanged();
-                                        }
-                                    },750);
+                                    } else {
+                                        final Handler handler = new Handler();
+                                        handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                hideCards(mainVM.Cards.getValue());
+                                                cardsAdapter.setCards(mainVM.Cards.getValue());
+                                                cardsAdapter.notifyDataSetChanged();
+                                            }
+                                        }, 750);
+                                    }
                                 }
                             }
+                            cardsAdapter.setCards(mainVM.Cards.getValue());
+                            cardsAdapter.notifyDataSetChanged();
                         }
-                        cardsAdapter.setCards(mainVM.Cards.getValue());
-                        cardsAdapter.notifyDataSetChanged();
                     }
                 });
                 rcShowCards.setLayoutManager(new GridLayoutManager(MainZikaron.this, 3));
@@ -77,7 +79,7 @@ public class MainZikaron extends AppCompatActivity {
         for (int i =0;i<cards.size();i++){
             if(cards.get(i).isHide == false){
                 cards.get(i).findZoog = true;
-                cards.get(i).isHide=false;
+                cards.get(i).isHide=true;
             }
         }
     }
@@ -134,22 +136,6 @@ public class MainZikaron extends AppCompatActivity {
 
             }
 
-        }
-        return false;
-    }
-    public boolean isSame2(ArrayList<Card> cards){
-        int tmp =0;
-        int counter=0;
-        for (int i=0;i<cards.size();i++){
-            if (cards.get(i).isHide == false){
-                counter++;
-                if (counter==1)
-                tmp = cards.get(i).getIdcontent();
-                if(counter == 2)
-                    if(cards.get(i).getIdcontent()==tmp){
-                        return true;
-                    }
-            }
         }
         return false;
     }
