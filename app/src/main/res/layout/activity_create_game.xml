@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateGame"
+    android:orientation="vertical"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_gravity="top"
+        android:gravity="center"
+        android:text="Zikaron Game"
+        android:textSize="40dp"
+        android:textColor="@android:color/holo_red_light"
+    />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:id="@+id/gameCode"
+        />
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center"
+        android:text="create game"
+        android:textSize="20dp"
+        android:id="@+id/Create"
+
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:hint="type game code"
+        android:visibility="gone"
+        android:id="@+id/JoinId"
+        />
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center"
+        android:text="join game"
+        android:textSize="20dp"
+        android:id="@+id/Join"
+        />
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center"
+        android:text="practice "
+        android:textSize="20dp"
+        android:id="@+id/parctice"
+        />
+</LinearLayout>

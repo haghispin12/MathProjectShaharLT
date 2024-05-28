@@ -35,12 +35,14 @@ public class SignUp extends AppCompatActivity {
         submitUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 auth.createUserWithEmailAndPassword(UserNameLabel.getText().toString(),PassWordLabel.getText().toString()).addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(SignUp.this,"regisration success",Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(SignUp.this, MainZikaron.class);
+                            Intent intent = new Intent(SignUp.this, CreateGame.class);
+                            startActivity(intent);
 
                         }else{
                             Toast.makeText(SignUp.this,"regisration failed",Toast.LENGTH_SHORT).show();
