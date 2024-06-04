@@ -1,16 +1,29 @@
 package com.example.mathprojectshaharlt;
 
+import java.util.ArrayList;
+
 public class Game {
     private String gameCode;
     private String player1;
     private String player2;
     private int status;
+    private String cards;
 
-    public Game(String gameCode,String player1,String player2,int status){
+    public Game(String gameCode,String player1,String player2,int status,String cards){
         this.gameCode=gameCode;
         this.player1 = player1;
         this.player2 =player2;
         this.status = status;
+        this.cards = cards;
+    }
+
+
+    public String getCards() {
+        return cards;
+    }
+
+    public void setCards(String cards) {
+        this.cards = cards;
     }
 
     public String getGameCode() {

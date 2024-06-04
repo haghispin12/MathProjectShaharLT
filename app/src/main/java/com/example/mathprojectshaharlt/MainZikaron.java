@@ -24,9 +24,10 @@ public class MainZikaron extends AppCompatActivity {
         setContentView(R.layout.activity_main_zikaron);
         rcShowCards = findViewById(R.id.rcShowCards);
         mainVM = new ViewModelProvider(this).get(MainVM.class);
-
-
-
+        String code = getIntent().getStringExtra("code");
+        mainVM.setGameCode(code);
+        mainVM.getJson();
+        mainVM.JsonToArr();
         mainVM.Cards.observe(this, new Observer<ArrayList<Card>>() {
             @Override
             public void onChanged(ArrayList<Card> cards) {
