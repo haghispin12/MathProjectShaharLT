@@ -10,11 +10,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
-import java.sql.Array;
 import java.util.ArrayList;
 
 public class MainVM extends ViewModel{
-    String arrJson;
+    private String arrJson;
     String gameCode;
     MutableLiveData<ArrayList<Card>> Cards;
     MutableLiveData<Integer>exposed;
@@ -42,11 +41,14 @@ public class MainVM extends ViewModel{
     }
     public void getJson(){
         collectionRef.whereEqualTo("gameCode",gameCode).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if(!queryDocumentSnapshots.isEmpty())
                 for(DocumentSnapshot documentSnapshot : queryDocumentSnapshots){
                     if(documentSnapshot.exists()){
-                        String arrJson = documentSnapshot.getString("cards");
+                        arrJson = documentSnapshot.getString("cards");
+                        JsonToArr();
                     }
                 }
             }

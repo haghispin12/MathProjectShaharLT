@@ -8,14 +8,19 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.gson.Gson;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.GeneratedAdapter;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,7 +34,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.model.DocumentSet;
 import java.util.ArrayList;
 import java.util.UUID;
-
+import java.util.Map;
+import java.util.HashMap;
 
 public class CreateGame extends AppCompatActivity {
     private EditText GameCode;
@@ -39,11 +45,13 @@ public class CreateGame extends AppCompatActivity {
     private Button Practice;
     private MainVM mainVM;
     FirebaseAuth auth;
+    String gameDocId = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_game);
         GameCode = findViewById(R.id.gameCode);
+       // GameCode.setVisibility(View.GONE);
         CreateGame = findViewById(R.id.Create);
         JoinId = findViewById(R.id.JoinId);
         Join = findViewById(R.id.Join);
@@ -56,21 +64,30 @@ public class CreateGame extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 JoinId.setVisibility(View.VISIBLE);
-                collectionRef.whereEqualTo("gameCode",JoinId.getText().toString()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        for(DocumentSnapshot dc : queryDocumentSnapshots)
-                        {
-                        String gameid = dc.getId();
-                        collectionRef.document(gameid).update("player2", auth.getCurrentUser().getEmail());
-                        collectionRef.document(gameid).update("status",1);
+                String code = JoinId.getText().toString().trim();
+                if (!code.isEmpty()) {
+                    collectionRef.whereEqualTo("gameCode",JoinId.getText().toString()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for(DocumentSnapshot dc : queryDocumentSnapshots)
+                            {
+                                String gameid = dc.getId();
+                                Map<String, Object> updates = new HashMap<>();updates.put("player2", auth.getCurrentUser().getEmail());
+                                updates.put("status", 1);
+
+                            }
+                    }
+
+
+                      //collectionRef.document(gameid).update("player2", auth.getCurrentUser().getEmail());
+    //                  collectionRef.document(gameid).update("status",1);
                         Intent intent = new Intent(CreateGame.this,MainZikaron.class);
-                        String code = JoinId.getText().toString();
+                       // String code = JoinId.getText().toString();
                         intent.putExtra("code",code);
                         startActivity(intent);
                         }
-                    }
-                });
+                }
+            });
             }
         });
         Practice.setOnClickListener(new View.OnClickListener() {
@@ -88,12 +105,28 @@ public class CreateGame extends AppCompatActivity {
                 ArrayList<Card>cards = mainVM.Cards.getValue();
                 String json = gson.toJson(cards);
                 Game game = new Game(code,auth.getCurrentUser().getEmail(),"0",0, json);
-                FirebaseFirestore.getInstance().collection("games").document().set(game).addOnSuccessListener(new OnSuccessListener<Void>() {
+              //  DocumentReference docRef = FirebaseFirestore.getInstance().collection("games").document(gameDocId);
+
+                FirebaseFirestore.getInstance().collection("games").add(game).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(CreateGame.this,"game created",Toast.LENGTH_SHORT).show();
+                    public void onSuccess(DocumentReference documentReference) {
+                        gameDocId = documentReference.getId();
                         GameCode.setText(code);
-                    }
+                        Toast.makeText(CreateGame.this,"game created",Toast.LENGTH_SHORT).show();
+                        DocumentReference docRef = FirebaseFirestore.getInstance().collection("games").document(gameDocId);
+                        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                                    if(documentSnapshot.exists()){
+                                        long statusValue = documentSnapshot.getLong("status");
+                                        if(1 == statusValue){
+                                            Intent intent = new Intent(CreateGame.this,MainZikaron.class);
+                                            startActivity(intent);
+                                        }
+                                    }
+                                }
+                            });
+                        }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
@@ -101,9 +134,7 @@ public class CreateGame extends AppCompatActivity {
                     }
                 });
 
-            }
-        });
-    }
-
-
+        }
+    });
+   }
 }

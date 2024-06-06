@@ -27,14 +27,14 @@ public class MainZikaron extends AppCompatActivity {
         String code = getIntent().getStringExtra("code");
         mainVM.setGameCode(code);
         mainVM.getJson();
-        mainVM.JsonToArr();
+
         mainVM.Cards.observe(this, new Observer<ArrayList<Card>>() {
             @Override
             public void onChanged(ArrayList<Card> cards) {
                 cardsAdapter = new CardsAdapter(cards, new CardsAdapter.OnitemClickListener() {
                     @Override
                     public void OnItemClick(Card item) {
-                        if (item.findZoog != true) {
+                        if (!item.findZoog) {
                             if (opossiteCards(mainVM.Cards.getValue()) == 1 || opossiteCards(mainVM.Cards.getValue()) == 0) {//בודק כמה קלפים הפוכים - נכנס במקרה של 1 או 0
                                 ExposeCard(mainVM.Cards.getValue(), item);//מוצא את הקלף שנלחץ במערך והופך אותו
                                 if (isSeconed(mainVM.Cards.getValue())) {// האם זה הקלף השני שהפוך?
