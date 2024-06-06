@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -25,7 +27,13 @@ public class MainZikaron extends AppCompatActivity {
         rcShowCards = findViewById(R.id.rcShowCards);
         mainVM = new ViewModelProvider(this).get(MainVM.class);
         String code = getIntent().getStringExtra("code");
+        String gameId = getIntent().getStringExtra("gameId");
+
+//        SharedPreferences sharedPreferences = getSharedPreferences("code", MODE_PRIVATE);
+//        String code = sharedPreferences.getString("code", "default_value");
+
         mainVM.setGameCode(code);
+        mainVM.setGameId(gameId);
         mainVM.getJson();
 
         mainVM.Cards.observe(this, new Observer<ArrayList<Card>>() {
@@ -46,6 +54,7 @@ public class MainZikaron extends AppCompatActivity {
                                                 markZoog(mainVM.Cards.getValue());
                                                 cardsAdapter.setCards(mainVM.Cards.getValue());
                                                 cardsAdapter.notifyDataSetChanged();
+                                                mainVM.saveToFirebase();
                                             }
                                         }, 750);
 
@@ -58,6 +67,7 @@ public class MainZikaron extends AppCompatActivity {
                                                 hideCards(mainVM.Cards.getValue());
                                                 cardsAdapter.setCards(mainVM.Cards.getValue());
                                                 cardsAdapter.notifyDataSetChanged();
+                                                mainVM.saveToFirebase();
                                             }
                                         }, 750);
                                     }
@@ -65,6 +75,7 @@ public class MainZikaron extends AppCompatActivity {
                             }
                             cardsAdapter.setCards(mainVM.Cards.getValue());
                             cardsAdapter.notifyDataSetChanged();
+                            mainVM.saveToFirebase();
                         }
                     }
                 });

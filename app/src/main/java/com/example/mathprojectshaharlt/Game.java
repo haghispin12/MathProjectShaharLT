@@ -9,12 +9,35 @@ public class Game {
     private int status;
     private String cards;
 
+    public ArrayList<Card> getJsonCards() {
+        return jsonCards;
+    }
+
+    public void setJsonCards(ArrayList<Card> jsonCards) {
+        this.jsonCards = jsonCards;
+    }
+
+    private ArrayList<Card> jsonCards;
+
+    public Game() {}
+
+
     public Game(String gameCode,String player1,String player2,int status,String cards){
         this.gameCode=gameCode;
         this.player1 = player1;
         this.player2 =player2;
         this.status = status;
         this.cards = cards;
+        this.jsonCards = new ArrayList<>();
+    }
+
+    public Game(String gameCode,String player1,String player2,int status,String cards, ArrayList<Card> jsonCards){
+        this.gameCode=gameCode;
+        this.player1 = player1;
+        this.player2 =player2;
+        this.status = status;
+        this.cards = cards;
+        this.jsonCards = jsonCards;
     }
 
 

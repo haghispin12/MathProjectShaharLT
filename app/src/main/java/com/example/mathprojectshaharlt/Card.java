@@ -11,6 +11,9 @@ public class Card {
     boolean isHide;
     boolean findZoog;
 
+    public Card() {
+
+    }
 
     public Card(int id, int idcontent, int imagecard, boolean isHide, boolean findZoog){
         this.id = id;
@@ -51,5 +54,21 @@ public class Card {
 
     public void setIdcontent(int idcontent) {
         this.idcontent = idcontent;
+    }
+
+    public boolean isHide() {
+        return isHide;
+    }
+
+    public void setHide(boolean hide) {
+        isHide = hide;
+    }
+
+    public boolean isFindZoog() {
+        return findZoog;
+    }
+
+    public void setFindZoog(boolean findZoog) {
+        this.findZoog = findZoog;
     }
 }

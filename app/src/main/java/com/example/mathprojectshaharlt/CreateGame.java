@@ -1,6 +1,7 @@
 package com.example.mathprojectshaharlt;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -51,7 +52,6 @@ public class CreateGame extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_game);
         GameCode = findViewById(R.id.gameCode);
-       // GameCode.setVisibility(View.GONE);
         CreateGame = findViewById(R.id.Create);
         JoinId = findViewById(R.id.JoinId);
         Join = findViewById(R.id.Join);
@@ -66,37 +66,43 @@ public class CreateGame extends AppCompatActivity {
                 JoinId.setVisibility(View.VISIBLE);
                 String code = JoinId.getText().toString().trim();
                 if (!code.isEmpty()) {
-                    collectionRef.whereEqualTo("gameCode",JoinId.getText().toString()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    collectionRef.whereEqualTo("gameCode", JoinId.getText().toString()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                            for(DocumentSnapshot dc : queryDocumentSnapshots)
-                            {
-                                String gameid = dc.getId();
-                                Map<String, Object> updates = new HashMap<>();updates.put("player2", auth.getCurrentUser().getEmail());
+                            String gameid = "";
+                            for (DocumentSnapshot dc : queryDocumentSnapshots) {
+                                gameid = dc.getId();
+                                Map<String, Object> updates = new HashMap<>();
+                                updates.put("player2", auth.getCurrentUser().getEmail());
                                 updates.put("status", 1);
-
+                                collectionRef.document(gameid).update(updates);
+                                //collectionRef.document(gameid).update("player2", auth.getCurrentUser().getEmail());
+                                //collectionRef.document(gameid).update("status",1);
                             }
-                    }
-
-
-                      //collectionRef.document(gameid).update("player2", auth.getCurrentUser().getEmail());
-    //                  collectionRef.document(gameid).update("status",1);
-                        Intent intent = new Intent(CreateGame.this,MainZikaron.class);
-                       // String code = JoinId.getText().toString();
-                        intent.putExtra("code",code);
-                        startActivity(intent);
+                            Intent intent = new Intent(CreateGame.this, MainZikaron.class);
+//                            String code = JoinId.getText().toString();
+                            intent.putExtra("code", code);
+                            intent.putExtra("gameId", gameid);
+//                            intent.getStringExtra(code);
+//                            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+//                            SharedPreferences.Editor editor = sharedPreferences.edit();
+//                            editor.putString("code", code);
+//                            editor.apply();
+//                            mainVM.setGameCode(code);
+                            startActivity(intent);
                         }
+                    });
                 }
-            });
             }
         });
         Practice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CreateGame.this,MainZikaron.class);
+                Intent intent = new Intent(CreateGame.this, MainZikaron.class);
                 startActivity(intent);
             }
         });
+
         CreateGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,8 +110,8 @@ public class CreateGame extends AppCompatActivity {
                 GameCode.setVisibility(View.VISIBLE);
                 ArrayList<Card>cards = mainVM.Cards.getValue();
                 String json = gson.toJson(cards);
-                Game game = new Game(code,auth.getCurrentUser().getEmail(),"0",0, json);
-              //  DocumentReference docRef = FirebaseFirestore.getInstance().collection("games").document(gameDocId);
+                Game game = new Game(code,auth.getCurrentUser().getEmail(),"0",0, json, cards);
+                //DocumentReference docRef = FirebaseFirestore.getInstance().collection("games").document(gameDocId);
 
                 FirebaseFirestore.getInstance().collection("games").add(game).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
@@ -121,6 +127,7 @@ public class CreateGame extends AppCompatActivity {
                                         long statusValue = documentSnapshot.getLong("status");
                                         if(1 == statusValue){
                                             Intent intent = new Intent(CreateGame.this,MainZikaron.class);
+                                            intent.putExtra("code", code);
                                             startActivity(intent);
                                         }
                                     }
@@ -133,8 +140,7 @@ public class CreateGame extends AppCompatActivity {
                         Toast.makeText(CreateGame.this,"fail creating game",Toast.LENGTH_SHORT).show();
                     }
                 });
-
         }
     });
-   }
+}
 }
