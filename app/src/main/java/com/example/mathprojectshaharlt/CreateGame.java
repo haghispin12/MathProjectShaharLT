@@ -128,6 +128,7 @@ public class CreateGame extends AppCompatActivity {
                                         if(1 == statusValue){
                                             Intent intent = new Intent(CreateGame.this,MainZikaron.class);
                                             intent.putExtra("code", code);
+                                            intent.putExtra("gameId",gameDocId);
                                             startActivity(intent);
                                         }
                                     }

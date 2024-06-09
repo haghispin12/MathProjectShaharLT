@@ -4,6 +4,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -11,7 +12,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
@@ -67,31 +70,40 @@ public class MainVM extends ViewModel{
     }
 
     public void getJson(){
-        collectionRef.whereEqualTo("gameCode",gameCode).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-
+        collectionRef.whereEqualTo("gameCode",gameCode).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                if (!queryDocumentSnapshots.isEmpty()){
-                    for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                        if (documentSnapshot.exists()) {
-//                            arrJson = documentSnapshot.getString("cards");
-//                            ArrayList<Card>JCards = gson.fromJson(arrJson, ArrayList.class);
-//                            JsonToArr();
-//                            List<Card> cardList = (List<Card>) documentSnapshot.get("jsonCards");
-//                            if (cardList != null) {
-//                                ArrayList<Card> jsonCards = new ArrayList<>(cardList);
-//                                int a = 0;
-//                                Cards.setValue(jsonCards);
-                                // Use the cardList as needed
-//                            }
-
-                            Game game = documentSnapshot.toObject(Game.class);
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                    Game game = documentSnapshot.toObject(Game.class);
                             Cards.setValue(game.getJsonCards());
-                        }
-                    }
-            }
+                }
             }
         });
+//        collectionRef.whereEqualTo("gameCode",gameCode).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//
+//            @Override
+//            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//                //if (!queryDocumentSnapshots.isEmpty()){
+//                    for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+//                        //if (documentSnapshot.exists()) {
+////                            arrJson = documentSnapshot.getString("cards");
+////                            ArrayList<Card>JCards = gson.fromJson(arrJson, ArrayList.class);
+////                            JsonToArr();
+////                            List<Card> cardList = (List<Card>) documentSnapshot.get("jsonCards");
+////                            if (cardList != null) {
+////                                ArrayList<Card> jsonCards = new ArrayList<>(cardList);
+////                                int a = 0;
+////                                Cards.setValue(jsonCards);
+//                                // Use the cardList as needed
+////                            }
+//
+//                            Game game = documentSnapshot.toObject(Game.class);
+//                            Cards.setValue(game.getJsonCards());
+//                        //}
+//                    }
+//            //}
+//            }
+//        });
     }
     public  void JsonToArr(){
     ArrayList<Card>JCards = gson.fromJson(arrJson, ArrayList.class);
