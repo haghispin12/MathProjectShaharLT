@@ -31,7 +31,7 @@ public class Game {
         this.jsonCards = new ArrayList<>();
     }
 
-    public Game(String gameCode,String player1,String player2,int status,String cards, ArrayList<Card> jsonCards){
+    public Game(String gameCode,String player1,String player2,int status, ArrayList<Card> jsonCards){
         this.gameCode=gameCode;
         this.player1 = player1;
         this.player2 =player2;
