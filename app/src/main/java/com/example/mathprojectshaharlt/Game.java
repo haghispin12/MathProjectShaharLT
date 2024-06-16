@@ -7,6 +7,7 @@ public class Game {
     private String player1;
     private String player2;
     private int status;
+    private int turn;
     private String cards;
 
     public ArrayList<Card> getJsonCards() {
@@ -22,23 +23,31 @@ public class Game {
     public Game() {}
 
 
-    public Game(String gameCode,String player1,String player2,int status,String cards){
-        this.gameCode=gameCode;
-        this.player1 = player1;
-        this.player2 =player2;
-        this.status = status;
-        this.cards = cards;
-        this.jsonCards = new ArrayList<>();
-    }
+//    public Game(String gameCode,String player1,String player2,int status,String cards){
+//        this.gameCode=gameCode;
+//        this.player1 = player1;
+//        this.player2 =player2;
+//        this.status = status;
+//        this.cards = cards;
+//        this.jsonCards = new ArrayList<>();
+//    }
 
-    public Game(String gameCode,String player1,String player2,int status, ArrayList<Card> jsonCards){
+    public Game(String gameCode,String player1,String player2,int status,int turn, ArrayList<Card> jsonCards){
         this.gameCode=gameCode;
         this.player1 = player1;
         this.player2 =player2;
         this.status = status;
+        this.turn = turn;
         this.jsonCards = jsonCards;
     }
 
+    public int getTurn() {
+        return turn;
+    }
+
+    public void setTurn(int turn) {
+        this.turn = turn;
+    }
 
     public String getCards() {
         return cards;
@@ -79,4 +88,6 @@ public class Game {
     public void setStatus(int status) {
         this.status = status;
     }
+
+
 }

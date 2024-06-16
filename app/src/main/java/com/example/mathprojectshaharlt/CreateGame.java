@@ -83,6 +83,7 @@ public class CreateGame extends AppCompatActivity {
 //                            String code = JoinId.getText().toString();
                             intent.putExtra("code", code);
                             intent.putExtra("gameId", gameid);
+                            intent.putExtra("PlayerTurn",2);
 //                            intent.getStringExtra(code);
 //                            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
 //                            SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -110,7 +111,7 @@ public class CreateGame extends AppCompatActivity {
                 GameCode.setVisibility(View.VISIBLE);
                 ArrayList<Card>cards = mainVM.Cards.getValue();
                 String json = gson.toJson(cards);
-                Game game = new Game(code,auth.getCurrentUser().getEmail(),"0",0, cards);
+                Game game = new Game(code,auth.getCurrentUser().getEmail(),"0",0, 1,cards);
                 //DocumentReference docRef = FirebaseFirestore.getInstance().collection("games").document(gameDocId);
 
                 FirebaseFirestore.getInstance().collection("games").add(game).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -129,6 +130,7 @@ public class CreateGame extends AppCompatActivity {
                                             Intent intent = new Intent(CreateGame.this,MainZikaron.class);
                                             intent.putExtra("code", code);
                                             intent.putExtra("gameId",gameDocId);
+                                            intent.putExtra("PlayerTurn",1);
                                             startActivity(intent);
                                         }
                                     }
