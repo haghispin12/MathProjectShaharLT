@@ -1,5 +1,6 @@
 package com.example.mathprojectshaharlt;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -10,15 +11,27 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
+
+
 
 public class MainZikaron extends AppCompatActivity {
     private RecyclerView rcShowCards;
     private MainVM mainVM;
     CardsAdapter cardsAdapter;
+    CollectionReference collectionRef = FirebaseFirestore.getInstance().collection("games");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +41,7 @@ public class MainZikaron extends AppCompatActivity {
         mainVM = new ViewModelProvider(this).get(MainVM.class);
         String code = getIntent().getStringExtra("code");
         String gameId = getIntent().getStringExtra("gameId");
+        int PlayerTurn = getIntent().getIntExtra("PlayerTurn", 0);
 
 //        SharedPreferences sharedPreferences = getSharedPreferences("code", MODE_PRIVATE);
 //        String code = sharedPreferences.getString("code", "default_value");
@@ -36,56 +50,107 @@ public class MainZikaron extends AppCompatActivity {
         mainVM.setGameId(gameId);
         mainVM.getJson();
 
-        mainVM.Cards.observe(this, new Observer<ArrayList<Card>>() {
+        mainVM.isPlayerTurn(PlayerTurn, new MainVM.Callback<Boolean>() {
             @Override
-            public void onChanged(ArrayList<Card> cards) {
-                cardsAdapter = new CardsAdapter(cards, new CardsAdapter.OnitemClickListener() {
-                    @Override
-                    public void OnItemClick(Card item) {
-                        if (!item.findZoog) {
-                            if (opossiteCards(mainVM.Cards.getValue()) == 1 || opossiteCards(mainVM.Cards.getValue()) == 0) {//בודק כמה קלפים הפוכים - נכנס במקרה של 1 או 0
-                                ExposeCard(mainVM.Cards.getValue(), item);//מוצא את הקלף שנלחץ במערך והופך אותו
-                                if (isSeconed(mainVM.Cards.getValue())) {// האם זה הקלף השני שהפוך?
-                                    if (isSame(mainVM.Cards.getValue())) {//האם 2 הקלפים ההפוכים דומים?
-                                        final Handler handler = new Handler();
-                                        handler.postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                markZoog(mainVM.Cards.getValue());
-                                                cardsAdapter.setCards(mainVM.Cards.getValue());
-                                                cardsAdapter.notifyDataSetChanged();
-                                                mainVM.saveToFirebase();
-                                            }
-                                        }, 750);
-
-////
-                                    } else {
-                                        final Handler handler = new Handler();
-                                        handler.postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                hideCards(mainVM.Cards.getValue());
-                                                cardsAdapter.setCards(mainVM.Cards.getValue());
-                                                cardsAdapter.notifyDataSetChanged();
-                                                mainVM.saveToFirebase();
-                                            }
-                                        }, 750);
-                                    }
-                                }
-                            }
-                            cardsAdapter.setCards(mainVM.Cards.getValue());
-                            cardsAdapter.notifyDataSetChanged();
-                            mainVM.saveToFirebase();
-                        }
-                    }
-                });
-                rcShowCards.setLayoutManager(new GridLayoutManager(MainZikaron.this, 3));
-                rcShowCards.setAdapter(cardsAdapter);
-                rcShowCards.setHasFixedSize(true);
-
+            public void onResult(Boolean isTurn) {
+                if (isTurn) {
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                    init();
+                }else {
+                    init();
+                    getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                }
             }
         });
     }
+
+        public void init(){
+        whoWins();
+            mainVM.Cards.observe(this, new Observer<ArrayList<Card>>() {
+                @Override
+                public void onChanged(ArrayList<Card> cards) {
+                    cardsAdapter = new CardsAdapter(cards, new CardsAdapter.OnitemClickListener() {
+                        @Override
+                        public void OnItemClick(Card item) {
+                            if (!item.findZoog) {
+                                if (opossiteCards(mainVM.Cards.getValue()) == 1 || opossiteCards(mainVM.Cards.getValue()) == 0) {//בודק כמה קלפים הפוכים - נכנס במקרה של 1 או 0
+                                    ExposeCard(mainVM.Cards.getValue(), item);//מוצא את הקלף שנלחץ במערך והופך אותו
+                                    if (isSeconed(mainVM.Cards.getValue())) {// האם זה הקלף השני שהפוך?
+                                        if (isSame(mainVM.Cards.getValue())) {//האם 2 הקלפים ההפוכים דומים?
+                                            final Handler handler = new Handler();
+                                            handler.postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    markZoog(mainVM.Cards.getValue());
+                                                    cardsAdapter.setCards(mainVM.Cards.getValue());
+                                                    cardsAdapter.notifyDataSetChanged();
+                                                    mainVM.saveToFirebase();
+                                                    mainVM.updateScore();
+                                                    mainVM.finishMyTurn();
+                                                }
+                                            }, 750);
+////
+                                        } else {
+                                            final Handler handler = new Handler();
+                                            handler.postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    hideCards(mainVM.Cards.getValue());
+                                                    cardsAdapter.setCards(mainVM.Cards.getValue());
+                                                    cardsAdapter.notifyDataSetChanged();
+                                                    mainVM.saveToFirebase();
+                                                    mainVM.finishMyTurn();
+                                                }
+                                            }, 750);
+                                        }
+                                    }
+                                }
+                                cardsAdapter.setCards(mainVM.Cards.getValue());
+                                cardsAdapter.notifyDataSetChanged();
+                                mainVM.saveToFirebase();
+
+                            }
+                        }
+                    });
+                    rcShowCards.setLayoutManager(new GridLayoutManager(MainZikaron.this, 3));
+                    rcShowCards.setAdapter(cardsAdapter);
+                    rcShowCards.setHasFixedSize(true);
+
+                }
+            });
+        }
+    public void whoWins(){
+        collectionRef.whereEqualTo("gameCode",mainVM.getGameCode()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    for (DocumentSnapshot dc : queryDocumentSnapshots) {
+                        if (dc.getLong("p1Score") + dc.getLong("p2Score") == 6){
+                            if (dc.getLong("p1Score") > dc.getLong("p2Score")) {
+                                Toast.makeText(MainZikaron.this, "Player 1 wins", Toast.LENGTH_SHORT).show();
+                            } else if (dc.getLong("p1Score") < dc.getLong("p2Score")) {
+                                Toast.makeText(MainZikaron.this, "Player 2 wins", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(MainZikaron.this, "its a draw", Toast.LENGTH_SHORT).show();
+                            }
+                    }
+                    }
+            }
+        });
+    }
+//    public boolean isGameFinshed(ArrayList<Card>cards){
+//        int counter =0;
+//        for (int i=0; i<cards.size();i++){
+//            if (cards.get(i).findZoog==true){
+//                counter++;
+//            }
+//        }
+//        if (counter == 11){
+//            return true;
+//        }else {
+//            return false;
+//        }
+//    }
     public void markZoog(ArrayList<Card>cards){
         int counter = 0;
         for (int i =0;i<cards.size();i++){
@@ -151,4 +216,6 @@ public class MainZikaron extends AppCompatActivity {
         }
         return false;
     }
+
+
 }

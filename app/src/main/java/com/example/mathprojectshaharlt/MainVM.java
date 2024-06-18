@@ -1,7 +1,6 @@
 package com.example.mathprojectshaharlt;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,7 +19,6 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MainVM extends ViewModel{
@@ -51,6 +49,165 @@ public class MainVM extends ViewModel{
 
 
     }
+//    public void isPlayerTurn(int playerTurn, Callback<Boolean> callback) {
+//        if (collectionRef == null || gameCode == null || gameCode.isEmpty()) {
+//            callback.onResult(false);
+//            return;
+//        }
+//
+//        collectionRef.whereEqualTo("gameCode", gameCode).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    QuerySnapshot querySnapshot = task.getResult();
+//                    if (!querySnapshot.isEmpty()) {
+//                        DocumentSnapshot documentSnapshot = querySnapshot.getDocuments().get(0);
+//                        Long currentTurnLong = documentSnapshot.getLong("turn");
+//                        if (currentTurnLong != null) {
+//                            long currentTurn = currentTurnLong;
+//                            boolean isTurn = (currentTurn == playerTurn);
+//                            callback.onResult(isTurn);
+//                        } else {
+//                            callback.onResult(false);
+//                        }
+//                    } else {
+//                        callback.onResult(false);
+//                    }
+//                } else {
+//                    callback.onResult(false);
+//                }
+//            }
+//        });
+//    }
+public void isPlayerTurn(int playerTurn, Callback<Boolean> callback) {
+    if (collectionRef == null || gameCode == null || gameCode.isEmpty()) {
+        callback.onResult(false);
+        return;
+    }
+
+    collectionRef.whereEqualTo("gameCode", gameCode)
+            .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException e) {
+                    if (e != null) {
+                        callback.onResult(false);
+                        return;
+                    }
+
+                    if (!snapshots.isEmpty()) {
+                        DocumentSnapshot documentSnapshot = snapshots.getDocuments().get(0);
+                        Long currentTurnLong = documentSnapshot.getLong("turn");
+                        if (currentTurnLong != null) {
+                            long currentTurn = currentTurnLong;
+                            boolean isTurn = (currentTurn == playerTurn);
+                            callback.onResult(isTurn);
+                        } else {
+                            callback.onResult(false);
+                        }
+                    } else {
+                        callback.onResult(false);
+                    }
+                }
+            });
+}
+
+    public void finishMyTurn(){
+        collectionRef.whereEqualTo("gameCode",gameCode).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+            for (DocumentSnapshot dc : queryDocumentSnapshots){
+                if (dc.getLong("turn")== 1) {
+                    Map<String, Object> updates = new HashMap<>();
+                    updates.put("turn", 2);
+                    collectionRef.document(gameId).update(updates);
+                } else if (dc.getLong("turn")==2) {
+                    Map<String, Object> updates = new HashMap<>();
+                    updates.put("turn", 1);
+                    collectionRef.document(gameId).update(updates);
+                }
+                }
+            }
+        });
+    }
+    public void updateScore(){
+        collectionRef.whereEqualTo("gameCode",gameCode).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (DocumentSnapshot dc : queryDocumentSnapshots){
+                    if (dc.getLong("turn")== 1) {
+                        Long score = dc.getLong("p1Score");
+                        score = score+1;
+                        Map<String, Object> updates = new HashMap<>();
+                        updates.put("p1Score", score);
+                        collectionRef.document(gameId).update(updates);
+                    } else if (dc.getLong("turn")==2) {
+                        Long score = dc.getLong("p2Score");
+                        score = score+1;
+                        Map<String, Object> updates = new HashMap<>();
+                        updates.put("p2Score", score);
+                        collectionRef.document(gameId).update(updates);
+                    }
+                }
+            }
+        });
+    }
+
+
+    // ממשק Callback
+    interface Callback<T> {
+        void onResult(T result);
+    }
+
+
+//    public boolean isPlayerTurn(int Pturn){
+//        boolean f = false;
+//        collectionRef.whereEqualTo("gameCode",gameCode).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+//                long turn = documentSnapshot.getLong("turn");
+//                if (turn == Pturn){
+//                    f = true;
+//                }
+//            }
+//        });
+//        return f;
+//    }
+//public void isPlayerTurn(int playerTurn, OnTurnCheckedListener listener) {
+//    if (collectionRef == null || gameCode == null || gameCode.isEmpty()) {
+//        listener.onTurnChecked(false);
+//        return;
+//    }
+//    collectionRef.whereEqualTo("gameCode", gameCode).get()
+//            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                    if (task.isSuccessful()) {
+//                        QuerySnapshot querySnapshot = task.getResult();
+//                        if (!querySnapshot.isEmpty()) {
+//                            DocumentSnapshot documentSnapshot = querySnapshot.getDocuments().get(0);
+//                            long currentTurn = documentSnapshot.getLong("turn");
+//                            boolean isTurn = (currentTurn == playerTurn);
+//                            listener.onTurnChecked(isTurn);
+//                        } else {
+//                            // המסמך לא נמצא
+//                            listener.onTurnChecked(false);
+//                        }
+//                    } else {
+//                        // טיפול בשגיאה
+//                        listener.onTurnChecked(false);
+//                    }
+//                }
+//            });
+//}
+//
+//    // ממשק הקשבה לבדיקת התור
+//    public interface OnTurnCheckedListener {
+//        void onTurnChecked(boolean isTurn);
+//    }
+
+
+
+
 
     public void saveToFirebase() {
         Map<String, Object> updates = new HashMap<>();
