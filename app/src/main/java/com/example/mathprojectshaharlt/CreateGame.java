@@ -111,7 +111,7 @@ public class CreateGame extends AppCompatActivity {
                 GameCode.setVisibility(View.VISIBLE);
                 ArrayList<Card>cards = mainVM.Cards.getValue();
                 String json = gson.toJson(cards);
-                Game game = new Game(code,auth.getCurrentUser().getEmail(),"0",0, 1,cards);
+                Game game = new Game(code,auth.getCurrentUser().getEmail(),"0",0, 1,0,0,cards);
                 //DocumentReference docRef = FirebaseFirestore.getInstance().collection("games").document(gameDocId);
 
                 FirebaseFirestore.getInstance().collection("games").add(game).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
