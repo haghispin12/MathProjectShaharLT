@@ -157,6 +157,9 @@ public void isPlayerTurn(int playerTurn, Callback<Boolean> callback) {
     interface Callback<T> {
         void onResult(T result);
     }
+    public void finishGame(){
+
+    }
 
 
 //    public boolean isPlayerTurn(int Pturn){

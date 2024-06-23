@@ -3,7 +3,7 @@
   <component name="deploymentTargetSelector">
     <selectionStates>
       <SelectionState runConfigName="LoginActivity">
-        <option name="selectionMode" value="DROPDOWN" />
+        <option name="selectionMode" value="DIALOG" />
         <DropdownSelection timestamp="2024-06-14T09:13:53.487465600Z">
           <Target type="DEFAULT_BOOT">
             <handle>
@@ -15,12 +15,12 @@
           <targets>
             <Target type="DEFAULT_BOOT">
               <handle>
-                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\user\.android\avd\Pixel_6a_API_30_new1.avd" />
+                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\user\.android\avd\Pixel_3a_API_33_x86_64.avd" />
               </handle>
             </Target>
             <Target type="DEFAULT_BOOT">
               <handle>
-                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\user\.android\avd\Pixel_3a_API_33_x86_64.avd" />
+                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\user\.android\avd\Pixel_6a_API_30_new1.avd" />
               </handle>
             </Target>
           </targets>

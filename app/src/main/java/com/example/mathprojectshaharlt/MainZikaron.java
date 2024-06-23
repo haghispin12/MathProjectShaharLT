@@ -128,6 +128,7 @@ public class MainZikaron extends AppCompatActivity {
                         if (dc.getLong("p1Score") + dc.getLong("p2Score") == 6){
                             if (dc.getLong("p1Score") > dc.getLong("p2Score")) {
                                 Toast.makeText(MainZikaron.this, "Player 1 wins", Toast.LENGTH_SHORT).show();
+
                             } else if (dc.getLong("p1Score") < dc.getLong("p2Score")) {
                                 Toast.makeText(MainZikaron.this, "Player 2 wins", Toast.LENGTH_SHORT).show();
                             } else {
