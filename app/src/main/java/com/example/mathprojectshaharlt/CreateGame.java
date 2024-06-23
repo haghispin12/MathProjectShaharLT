@@ -15,6 +15,10 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.gson.Gson;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -60,6 +64,13 @@ public class CreateGame extends AppCompatActivity {
         mainVM = new ViewModelProvider(this).get(MainVM.class);
         CollectionReference collectionRef = FirebaseFirestore.getInstance().collection("games");
         Gson gson = new Gson();
+
+        ActivityResultLauncher<Intent>activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                String Winner = result.getData().getStringExtra("winner");
+            }
+        });
         Join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,7 +101,8 @@ public class CreateGame extends AppCompatActivity {
 //                            editor.putString("code", code);
 //                            editor.apply();
 //                            mainVM.setGameCode(code);
-                            startActivity(intent);
+//                            startActivity(intent);
+                            activityResultLauncher.launch(intent);
                         }
                     });
                 }
@@ -131,7 +143,8 @@ public class CreateGame extends AppCompatActivity {
                                             intent.putExtra("code", code);
                                             intent.putExtra("gameId",gameDocId);
                                             intent.putExtra("PlayerTurn",1);
-                                            startActivity(intent);
+//                                            startActivity(intent);
+                                            activityResultLauncher.launch(intent);
                                         }
                                     }
                                 }

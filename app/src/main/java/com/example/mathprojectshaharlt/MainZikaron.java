@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,19 +34,23 @@ public class MainZikaron extends AppCompatActivity {
     private MainVM mainVM;
     CardsAdapter cardsAdapter;
     CollectionReference collectionRef = FirebaseFirestore.getInstance().collection("games");
+    String Winner ="";
+    Intent intent = new Intent();
+    private BatteryRecivever batteryReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_zikaron);
+        batteryReceiver = new BatteryRecivever();
+        IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        registerReceiver(batteryReceiver, filter);
         rcShowCards = findViewById(R.id.rcShowCards);
         mainVM = new ViewModelProvider(this).get(MainVM.class);
         String code = getIntent().getStringExtra("code");
         String gameId = getIntent().getStringExtra("gameId");
         int PlayerTurn = getIntent().getIntExtra("PlayerTurn", 0);
 
-//        SharedPreferences sharedPreferences = getSharedPreferences("code", MODE_PRIVATE);
-//        String code = sharedPreferences.getString("code", "default_value");
 
         mainVM.setGameCode(code);
         mainVM.setGameId(gameId);
@@ -63,6 +69,11 @@ public class MainZikaron extends AppCompatActivity {
                 }
             }
         });
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(batteryReceiver);
     }
 
         public void init(){
@@ -128,12 +139,18 @@ public class MainZikaron extends AppCompatActivity {
                         if (dc.getLong("p1Score") + dc.getLong("p2Score") == 6){
                             if (dc.getLong("p1Score") > dc.getLong("p2Score")) {
                                 Toast.makeText(MainZikaron.this, "Player 1 wins", Toast.LENGTH_SHORT).show();
+                                Winner = "player1";
 
                             } else if (dc.getLong("p1Score") < dc.getLong("p2Score")) {
                                 Toast.makeText(MainZikaron.this, "Player 2 wins", Toast.LENGTH_SHORT).show();
+                                Winner = "player2";
                             } else {
                                 Toast.makeText(MainZikaron.this, "its a draw", Toast.LENGTH_SHORT).show();
+                                Winner = "draw";
                             }
+                            intent.putExtra("winner",Winner);
+                            setResult(RESULT_OK,intent);
+                            finish();
                     }
                     }
             }
